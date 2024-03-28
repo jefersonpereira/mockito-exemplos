@@ -18,10 +18,15 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class GeradorDeNumerosTeste {
 
+    private MockedStatic<GeradorDeNumeros> gerador = Mockito.mockStatic(GeradorDeNumeros.class);
+    
+    @AfterEach
+    void limparMockedStatic() {
+        gerador.close();
+    }
+    
     @Test
     void validaGeracaoListaDeNumeros() {
-        MockedStatic<GeradorDeNumeros> gerador = Mockito.mockStatic(GeradorDeNumeros.class);
-
         List<Integer> integers = List.of(1, 2, 3, 4, 5, 6, 7, 8);
 
         gerador.when(() -> GeradorDeNumeros.geraNumerosAleatorios(anyInt()))
@@ -32,9 +37,6 @@ public class GeradorDeNumerosTeste {
 
     @Test
     void validaGeracaoListaDeNumerosSemInformarTamanho() {
-
-        MockedStatic<GeradorDeNumeros> gerador = Mockito.mockStatic(GeradorDeNumeros.class);
-
         List<Integer> integers = List.of(10, 9, 8, 6);
 
         gerador.when(GeradorDeNumeros::geraNumerosAleatorios).thenReturn(integers);
